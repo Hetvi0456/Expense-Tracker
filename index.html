@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Expense Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -24,32 +24,41 @@
 
         <section class="expense-form">
             <h2>Add Expense</h2>
+
             <form id="expense-form">
-                <input type="text" id="expense-name" title="Expense Name" placeholder="e.g. Groceries" required>
-                <input type="number" id="expense-amount" title="Amount ($)" placeholder="e.g. 50.00" required>
-                <select id="expense-category" title="Category" required>
-                    <option value="" disabled selected>Select Category</option>
-                    <option value="Food">Food</option>
-                    <option value="Transportation">Transportation</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Utilities">Utilities</option>
-                </select>
-                <input type="date" id="expense-date" title="Date" required>
+                <div class="form-group">
+                    <label for="expense-name">Expense Name</label>
+                    <input type="text" id="expense-name" placeholder="e.g. Groceries" required>
+                </div>
+                <div class="form-group">
+                    <label for="expense-amount">Amount ($)</label>
+                    <input type="number" id="expense-amount" placeholder="e.g. 50.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="expense-category">Category</label>
+                    <select id="expense-category" required>
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="Food">Food</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expense-date">Date</label>
+                    <input type="date" id="expense-date" required>
+                </div>
                 <button type="submit">+ Add Expense</button>
             </form>
         </section>
 
         <section class="controls">
-            <div class="search-box">
-
-            </div>
-            <div class="filter-box">
-
-            </div>
+            <div class="search-box"></div>
+            <div class="filter-box"></div>
         </section>
 
         <section class="expense-list">
-            <table>
+            <table aria-label="Expense List">
                 <thead>
                     <tr>
                         <th>Expense</th>
