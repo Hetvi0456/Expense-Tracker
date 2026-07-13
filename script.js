@@ -38,8 +38,8 @@ expenseForm.addEventListener("submit", (event) => {
         return;
     }
 
-    if(!date) {
-        alert("Please enter a date");
+    if(!date || date > new Date().toISOString().split("T")[0]) {
+        alert("Please enter a valid date");
         return;
     }
 
@@ -48,4 +48,49 @@ expenseForm.addEventListener("submit", (event) => {
     console.log(amount);
     console.log(category);
     console.log(date);
+
+    const expense = {
+        id : Date.now(),
+        name,
+        amount,
+        category,
+        date
+    };
+
+    console.log(expense);
+
+    addExpense(expense);
 })
+
+function addExpense(expense) {
+    expenses.push(expense);
+    displayExpenses();
+    updateSummary();
+}
+
+function displayExpenses() {
+    expenseTableBody.innerHTML = "";
+    let rows = "";
+    expenses.forEach((expense) => {
+        rows += `
+            <tr>
+                <td> ${expense.name} </td>
+                <td> ${expense.category} </td>
+                <td> ${expense.date} </td>
+                <td> $${expense.amount.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} </td>
+                <td> <button>Delete</button> </td>
+            </tr>
+        `;
+    });
+    expenseTableBody.innerHTML = rows;
+}
+
+// Function to update the summary of total amount and total transactions
+function updateSummary() {
+    let total = 0;
+    expenses.forEach((expense) => {
+        total += expense.amount;
+    });
+    totalAmount.textContent = `$${total.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    totalTransactions.textContent = expenses.length;
+}
