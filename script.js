@@ -60,10 +60,19 @@ expenseForm.addEventListener("submit", (event) => {
     console.log(expense);
 
     addExpense(expense);
+
+    expenseForm.reset();
 })
 
 function addExpense(expense) {
     expenses.push(expense);
+    displayExpenses();
+    updateSummary();
+}
+
+function deleteExpense(id) {
+    expenses = expenses.filter((expense) => expense.id !== id);
+
     displayExpenses();
     updateSummary();
 }
@@ -78,7 +87,7 @@ function displayExpenses() {
                 <td> ${expense.category} </td>
                 <td> ${expense.date} </td>
                 <td> $${expense.amount.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} </td>
-                <td> <button>Delete</button> </td>
+                <td> <button onclick="deleteExpense(${expense.id})">Delete</button> </td>
             </tr>
         `;
     });
@@ -94,3 +103,50 @@ function updateSummary() {
     totalAmount.textContent = `$${total.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     totalTransactions.textContent = expenses.length;
 }
+
+function filterExpenses() {
+    const searchText = searchInput.value.toLowerCase().trim();
+    const selectedCategory = categoryFilter.value;
+
+    const filteredExpenses = expenses.filter((expense) => {
+        const matchesSearch = expense.name.toLowerCase().includes(searchText);
+
+        const matchesCategory =
+            selectedCategory === "all" ||
+            expense.category === selectedCategory;
+
+        return matchesSearch && matchesCategory;
+    });
+
+    displayFilteredExpenses(filteredExpenses);
+}
+
+function displayFilteredExpenses(filteredExpenses) {
+    expenseTableBody.innerHTML = "";
+
+    let rows = "";
+
+    filteredExpenses.forEach((expense) => {
+        rows += `
+            <tr>
+                <td>${expense.name}</td>
+                <td>${expense.category}</td>
+                <td>${expense.date}</td>
+                <td>$${expense.amount.toLocaleString("en-IN", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })}</td>
+                <td>
+                    <button onclick="deleteExpense(${expense.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+
+    expenseTableBody.innerHTML = rows;
+}
+
+searchInput.addEventListener("input", filterExpenses);
+categoryFilter.addEventListener("change", filterExpenses);
